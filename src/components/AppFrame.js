@@ -1,172 +1,172 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { Route, Switch } from 'react-router-dom';
 import { withStyles } from 'material-ui/styles';
-import Typography from 'material-ui/Typography';
-import AppBar from 'material-ui/AppBar';
+import { connect } from 'react-redux';
 import Toolbar from 'material-ui/Toolbar';
+import Drawer from 'material-ui/Drawer';
+import Divider from 'material-ui/Divider';
+import classNames from 'classnames';
+import AppBar from 'material-ui/AppBar';
+import List from 'material-ui/List';
+import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
-import compose from 'recompose/compose';
+import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
+import { menuItems } from './menuItems';
+
+const Home = () => (
+    <div>
+    </div>
+)
+
+const drawerWidth = 240;
 
 const styles = theme => ({
-    '@global': {
-        html: {
-            background: theme.palette.background.default,
-            WebkitFontSmoothing: 'antialiased', // Antialiasing.
-            MozOsxFontSmoothing: 'grayscale', // Antialiasing.
-            boxSizing: 'border-box',
-            '@media print': {
-                background: theme.palette.common.white,
-            },
-        },
-        '*, *:before, *:after': {
-            boxSizing: 'inherit',
-        },
-        body: {
-            margin: 0,
-        },
-        '#nprogress': {
-            pointerEvents: 'none',
-            '& .bar': {
-                position: 'fixed',
-                background:
-                    theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
-                borderRadius: 1,
-                zIndex: theme.zIndex.tooltip,
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: 2,
-            },
-            '& dd, & dt': {
-                position: 'absolute',
-                top: 0,
-                height: 2,
-                boxShadow: `${
-                    theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white
-                    } 1px 0 6px 1px`,
-                borderRadius: '100%',
-                animation: 'nprogress-pulse 2s ease-out 0s infinite',
-            },
-            '& dd': {
-                opacity: 0.6,
-                width: 20,
-                right: 0,
-                clip: 'rect(-6px,22px,14px,10px)',
-            },
-            '& dt': {
-                opacity: 0.6,
-                width: 180,
-                right: -80,
-                clip: 'rect(-6px,90px,14px,-6px)',
-            },
-        },
-        '@keyframes nprogress-pulse': {
-            '30%': {
-                opacity: 0.6,
-            },
-            '60%': {
-                opacity: 0,
-            },
-            to: {
-                opacity: 0.6,
-            },
-        },
-    },
     root: {
-        display: 'flex',
-        alignItems: 'stretch',
-        minHeight: '100vh',
         width: '100%',
+        height: '100%',
+        marginTop: 0,
+        zIndex: 1,
+        overflow: 'hidden',
     },
-    grow: {
-        flex: '1 1 auto',
-    },
-    title: {
-        marginLeft: 24,
-        flex: '0 1 auto',
+    appFrame: {
+        position: 'relative',
+        display: 'flex',
+        width: '100%',
+        height: '100%',
     },
     appBar: {
-        transition: theme.transitions.create('width'),
-        '@media print': {
-            position: 'absolute',
-        },
-    },
-    appBarHome: {
-        boxShadow: 'none',
+        position: 'absolute',
+        zIndex: theme.zIndex.navDrawer + 1,
+        transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
     },
     appBarShift: {
-        [theme.breakpoints.up('lg')]: {
-            width: 'calc(100% - 250px)',
-        },
+        marginLeft: drawerWidth,
+        width: `calc(100% - ${drawerWidth}px)`,
+        transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
     },
-    drawer: {
-        [theme.breakpoints.up('lg')]: {
-            width: 250,
-        },
+    menuButton: {
+        marginLeft:6,
+        marginRight: 6,
     },
-    navIconHide: {
-        [theme.breakpoints.up('lg')]: {
-            display: 'none',
+    hide: {
+        display: 'none',
+    },
+    drawerPaper: {
+        position: 'relative',
+        height: '100%',
+        width: drawerWidth,
+        transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
+    drawerPaperClose: {
+        width: 60,
+        overflowX: 'hidden',
+        transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+    },
+    drawerInner: {
+        // Make the items inside not wrap when transitioning:
+        width: drawerWidth,
+    },
+    drawerHeader: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        padding: '0 8px',
+        ...theme.mixins.toolbar,
+    },
+    content: {
+        width: '100%',
+        flexGrow: 1,
+        backgroundColor: theme.palette.background.default,
+        padding: 24,
+        height: 'calc(100% - 56px)',
+        marginTop: 56,
+        [theme.breakpoints.up('sm')]: {
+            height: 'calc(100% - 64px)',
+            marginTop: 64,
         },
     },
 });
 
 class AppFrame extends React.Component {
     state = {
-        mobileOpen: false,
+        open: false,
     };
 
-    handleDrawerToggle = () => {
-        this.setState({ mobileOpen: !this.state.mobileOpen });
+    handleDrawerOpen = () => {
+        this.setState({ open: true });
+    };
+
+    handleDrawerClose = () => {
+        this.setState({ open: false });
     };
 
     render() {
-        const { children, classes, uiTheme } = this.props;
-        const title =  '';
-        let navIconClassName = '';
-        let appBarClassName = classes.appBar;
-
-        if (title === null) {
-            appBarClassName += ` ${classes.appBarHome}`;
-        } else {
-            navIconClassName = classes.navIconHide;
-            appBarClassName += ` ${classes.appBarShift}`;
-        }
-
+        const {classes,Component,title} = this.props;
         return (
             <div className={classes.root}>
-                <AppBar className={appBarClassName}>
-                    <Toolbar>
-                        <IconButton
-                            color="contrast"
-                            aria-label="open drawer"
-                            onClick={this.handleDrawerToggle}
-                            className={navIconClassName}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        {title !== null && (
-                            <Typography className={classes.title} type="title" color="inherit" noWrap>
+                <div className={classes.appFrame}>
+                    <AppBar className={classNames(classes.appBar, this.state.open && classes.appBarShift)}>
+                        <Toolbar disableGutters={!this.state.open}>
+                            <IconButton
+                                color="contrast"
+                                aria-label="open drawer"
+                                onClick={this.handleDrawerOpen}
+                                className={classNames(classes.menuButton, this.state.open && classes.hide)}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Typography type="title" color="inherit" noWrap>
                                 {title}
                             </Typography>
-                        )}
-                        <div className={classes.grow} />
-                    </Toolbar>
-                </AppBar>
-
+                        </Toolbar>
+                    </AppBar>
+                    <Drawer
+                        type="permanent"
+                        classes={{
+                            paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
+                        }}
+                        open={this.state.open}
+                    >
+                        <div className={classes.drawerInner}>
+                            <div className={classes.drawerHeader}>
+                                <IconButton onClick={this.handleDrawerClose}>
+                                    <ChevronLeftIcon />
+                                </IconButton>
+                            </div>
+                            <Divider />
+                            <List className={classes.list}>{menuItems}</List>
+                        </div>
+                    </Drawer>
+                    <main className={classes.content}>
+                        <Switch>
+                            <Route exact path="/" component={Home}/>
+                            <Route exact path="/DataBaseTool" component={Home}/>
+                        </Switch>
+                    </main>
+                </div>
             </div>
         );
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        title: state.common.title
+    }};
 
-export default compose(
-    withStyles(styles, {
-        name: 'AppFrame',
-    }),
-    connect(state => ({
-        uiTheme: state.theme,
-    })),
-)(AppFrame);
+
+export default connect(mapStateToProps)(withStyles(styles)(AppFrame));
