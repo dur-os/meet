@@ -1,10 +1,10 @@
 import { applyMiddleware, createStore } from 'redux';
 import { createLogger } from 'redux-logger'
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
-// import { promiseMiddleware, localStorageMiddleware } from './middleware';
+import { promiseMiddleware } from './middleware';
 import thunkMiddleware from 'redux-thunk';
 import reducer from './reducer';
-
+//localStorageMiddleware
 import { routerMiddleware } from 'react-router-redux'
 import createHistory from 'history/createBrowserHistory';
 
@@ -15,10 +15,10 @@ const myRouterMiddleware = routerMiddleware(history);
 
 const getMiddleware = () => {
   if (process.env.NODE_ENV === 'production') {
-    return applyMiddleware(myRouterMiddleware, thunkMiddleware);
+    return applyMiddleware(myRouterMiddleware,promiseMiddleware, thunkMiddleware);
   } else {
     // Enable additional logging in non-production environments.
-    return applyMiddleware(myRouterMiddleware, thunkMiddleware, createLogger())
+    return applyMiddleware(myRouterMiddleware,promiseMiddleware, thunkMiddleware, createLogger())
   }
 };
 
