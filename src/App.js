@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import AppWrapper from './components/AppWrapper';
+import AppFrame from './components/AppFrame';
 
 class App extends Component {
   render() {
     return (
-            <AppWrapper>
-            </AppWrapper>
+            <AppFrame></AppFrame>
     );
   }
 }

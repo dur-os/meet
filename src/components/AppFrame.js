@@ -14,6 +14,7 @@ import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import { menuItems } from './menuItems';
+import DataBase from './Tools/DataBase';
 
 const Home = () => (
     <div>
@@ -115,7 +116,7 @@ class AppFrame extends React.Component {
     };
 
     render() {
-        const {classes,Component,title} = this.props;
+        const {classes,title} = this.props;
         return (
             <div className={classes.root}>
                 <div className={classes.appFrame}>
@@ -154,7 +155,7 @@ class AppFrame extends React.Component {
                     <main className={classes.content}>
                         <Switch>
                             <Route exact path="/" component={Home}/>
-                            <Route exact path="/DataBaseTool" component={Home}/>
+                            <Route path="/DataBaseTool" component={DataBase}/>
                         </Switch>
                     </main>
                 </div>
