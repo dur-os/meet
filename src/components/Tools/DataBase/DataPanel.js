@@ -3,10 +3,8 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {withStyles} from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
-import { Route, Switch } from 'react-router-dom';
-
-import AddPanel from "./AddPanel";
-import DataPanel from "./DataPanel";
+import DataBaseHead from "./DataBaseHead"
+import DataTable from "./DataTable"
 
 const styles = theme => ({
     root: {
@@ -21,24 +19,21 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({});
 
-class DataBase extends React.Component {
+class DataPanel extends React.Component {
 
     render() {
         const {classes} = this.props;
         return (
             <Paper className={classes.root}>
-                <Switch>
-                    <Route exact path="/DataBaseTool" component={DataPanel}/>
-                    <Route path="/DataBaseTool/Add" component={AddPanel}/>
-                </Switch>
-
+                <DataBaseHead/>
+                <DataTable/>
             </Paper>
         );
     }
 }
 
-DataBase.propTypes = {
+DataPanel.propTypes = {
     classes: PropTypes.object,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DataBase));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DataPanel));

@@ -16,6 +16,7 @@ import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import { menuItems } from './menuItems';
 import DataBase from './Tools/DataBase/Index';
 
+
 const Home = () => (
     <div>
     </div>
@@ -156,7 +157,6 @@ class AppFrame extends React.Component {
                         <Switch>
                             <Route exact path="/" component={Home}/>
                             <Route path="/DataBaseTool" component={DataBase}/>
-                            <Route path="/DataBaseTool/Add" component={DataBase}/>
                         </Switch>
                     </main>
                 </div>
