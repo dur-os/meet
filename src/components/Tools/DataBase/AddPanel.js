@@ -26,19 +26,6 @@ function getSteps() {
     return ['请选择源数据库', '请选择目标数据库', '请输入要同步的租户信息'];
 }
 
-function getStepContent(stepIndex) {
-    switch (stepIndex) {
-        case 0:
-            return 'Select campaign settings...';
-        case 1:
-            return 'What is an ad group anyways?';
-        case 2:
-            return 'This is the bit I really care about!';
-        default:
-            return 'Uknown stepIndex';
-    }
-}
-
 const mapStateToProps = state => ({
     ...state.dataBase
 });
@@ -48,6 +35,7 @@ const mapDispatchToProps = dispatch => ({});
 class AddPanel extends React.Component {
     state = {
         activeStep: 0,
+        activeNext: false,
     };
     handleNext = () => {
         const {activeStep} = this.state;
@@ -63,6 +51,13 @@ class AddPanel extends React.Component {
             activeStep: activeStep - 1 < 0 ? 0 : activeStep - 1,
         });
     };
+
+    handleActiveNext = (activeNext) => {
+        this.setState({
+            activeNext: activeNext,
+        });
+    };
+
 
     render() {
         const {classes} = this.props;
@@ -82,7 +77,10 @@ class AddPanel extends React.Component {
                 </Stepper>
                 <div>
                     <div align={'center'}>
-                        <div className={classes.instructions}><StepContextPanel activeStep={activeStep}/></div>
+                        <div className={classes.instructions}>
+                            <StepContextPanel activeStep={activeStep}
+                                              handleActiveNext={this.handleActiveNext}/>
+                        </div>
                         <div>
                             <Button raised color="accent"
                                     disabled={activeStep === 0}
@@ -91,7 +89,10 @@ class AddPanel extends React.Component {
                             >
                                 上一步
                             </Button>
-                            <Button raised color="primary" onClick={this.handleNext}>
+                            <Button raised color="primary"
+                                    onClick={this.handleNext}
+                                    disabled={!this.state.activeNext}
+                            >
                                 {activeStep === steps.length - 1 ? '提交' : '下一步'}
                             </Button>
                         </div>
@@ -105,8 +106,6 @@ class AddPanel extends React.Component {
 AddPanel.propTypes = {
     classes: PropTypes.object,
 };
-
-
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AddPanel));

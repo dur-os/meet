@@ -6,6 +6,7 @@ import Select from 'material-ui/Select';
 import {MenuItem} from 'material-ui/Menu';
 import Input, {InputLabel} from 'material-ui/Input';
 import {FormControl, FormHelperText} from 'material-ui/Form';
+import NumberFormat from 'react-number-format';
 
 const styles = theme => ({
     root: {
@@ -21,6 +22,20 @@ const styles = theme => ({
     },
 });
 
+
+class NumberFormatCustom extends React.Component {
+    render() {
+        return (
+            <NumberFormat
+                {...this.props}
+                fixedDecimalScale={true}
+                allowNegative={false}
+                decimalScale={0}
+            />
+        );
+    }
+}
+
 const mapStateToProps = state => ({
     ...state.activeStep
 });
@@ -30,28 +45,37 @@ const mapDispatchToProps = dispatch => ({});
 class StepContextPanel extends React.Component {
     componentWillReceiveProps(nextProps) {
         this.setState({activeStep: nextProps.activeStep})
-        console.log("log:", nextProps)
+        this.props.handleActiveNext(this.state[`activeStep${nextProps.activeStep}`]);
     }
 
-    state = {
-        source: '',
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            source: '',
+            destination: '',
+            dbid: '',
+            activeStep: props.activeStep,
+        }
+    }
 
     handleChange = event => {
-        this.setState({ [event.target.name]: event.target.value });
+        this.setState({[event.target.name]: event.target.value});
+       const activeStepNum =`activeStep${this.state.activeStep}`;
+        this.setState({[activeStepNum]: Boolean(event.target.value)});
+        this.props.handleActiveNext(Boolean(event.target.value));
     };
 
     render() {
         const {classes} = this.props;
-        console.log("log:", this.state)
+
         return (
             <div className={classes.root}>
                 <div className={classes.contextDiv}>
-                    <FormControl className={classes.formControl}>
-                        <InputLabel htmlFor="age-helper">Age</InputLabel>
+                    <FormControl name="activeStep0" className={classes.formControl} disabled={this.state.activeStep !== 0}>
+                        <InputLabel htmlFor="source-helper">源数据库</InputLabel>
                         <Select value={this.state.source}
                                 onChange={this.handleChange}
-                                input={<Input name="source" id="age-simple"/>}
+                                input={<Input name="source" aa={0} id="source-simple"/>}
                         >
                             <MenuItem value="">
                                 <em>None</em>
@@ -62,8 +86,29 @@ class StepContextPanel extends React.Component {
                         </Select>
                     </FormControl>
                 </div>
-                <div className={classes.contextDiv}>2</div>
-                <div className={classes.contextDiv}>2</div>
+                <div className={classes.contextDiv}>
+                    <FormControl className={classes.formControl} disabled={this.state.activeStep !== 1}>
+                        <InputLabel htmlFor="destination-helper">目标数据库</InputLabel>
+                        <Select value={this.state.destination}
+                                onChange={this.handleChange}
+                                input={<Input name="destination" id="destination-simple"/>}
+                        >
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={10}>Ten</MenuItem>
+                            <MenuItem value={20}>Twenty</MenuItem>
+                            <MenuItem value={30}>Thirty</MenuItem>
+                        </Select>
+                    </FormControl>
+                </div>
+                <div className={classes.contextDiv}>
+                    <FormControl className={classes.formControl} disabled={this.state.activeStep !== 2}>
+                        <InputLabel htmlFor="dbid-simple">租户ID</InputLabel>
+                        <Input id="dbid-simple" inputComponent={NumberFormatCustom} value={this.state.dbid} name="dbid"
+                               onChange={this.handleChange}/>
+                    </FormControl>
+                </div>
             </div>
         );
     }
