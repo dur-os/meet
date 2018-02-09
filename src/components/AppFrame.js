@@ -12,11 +12,9 @@ import List from 'material-ui/List';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
-import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import { menuItems } from './menuItems';
 import DataBase from './Tools/DataBase/Index';
-
-
+import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 const Home = () => (
     <div>
     </div>
@@ -103,6 +101,7 @@ const styles = theme => ({
     },
 });
 
+
 class AppFrame extends React.Component {
     state = {
         open: false,
@@ -124,20 +123,20 @@ class AppFrame extends React.Component {
                     <AppBar className={classNames(classes.appBar, this.state.open && classes.appBarShift)}>
                         <Toolbar disableGutters={!this.state.open}>
                             <IconButton
-                                color="contrast"
+                                color="inherit"
                                 aria-label="open drawer"
                                 onClick={this.handleDrawerOpen}
                                 className={classNames(classes.menuButton, this.state.open && classes.hide)}
                             >
                                 <MenuIcon />
                             </IconButton>
-                            <Typography type="title" color="inherit" noWrap>
+                            <Typography variant="title" color="inherit" noWrap>
                                 {title}
                             </Typography>
                         </Toolbar>
                     </AppBar>
                     <Drawer
-                        type="permanent"
+                        variant="permanent"
                         classes={{
                             paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
                         }}

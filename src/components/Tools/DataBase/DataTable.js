@@ -37,19 +37,19 @@ class DataTable extends React.Component {
                             <TableCell>状态</TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody>
-                        {/*{data.map(n => {*/}
-                        {/*return (*/}
-                        {/*<TableRow key={n.id}>*/}
-                        {/*<TableCell>{n.name}</TableCell>*/}
-                        {/*<TableCell>{n.calories}</TableCell>*/}
-                        {/*<TableCell>{n.fat}</TableCell>*/}
-                        {/*<TableCell>{n.carbs}</TableCell>*/}
-                        {/*<TableCell>{n.protein}</TableCell>*/}
-                        {/*</TableRow>*/}
-                        {/*);*/}
-                        {/*})}*/}
-                    </TableBody>
+                    {/*<TableBody>*/}
+                        {/*/!*{data.map(n => {*!/*/}
+                        {/*/!*return (*!/*/}
+                        {/*/!*<TableRow key={n.id}>*!/*/}
+                        {/*/!*<TableCell>{n.name}</TableCell>*!/*/}
+                        {/*/!*<TableCell>{n.calories}</TableCell>*!/*/}
+                        {/*/!*<TableCell>{n.fat}</TableCell>*!/*/}
+                        {/*/!*<TableCell>{n.carbs}</TableCell>*!/*/}
+                        {/*/!*<TableCell>{n.protein}</TableCell>*!/*/}
+                        {/*/!*</TableRow>*!/*/}
+                        {/*/!*);*!/*/}
+                        {/*/!*})}*!/*/}
+                    {/*</TableBody>*/}
                 </Table>
             </Paper>
         );
